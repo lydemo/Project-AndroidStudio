@@ -1,0 +1,1 @@
+include ':app', ':magicfilter', ':matisse', 'sample', ':sample1', ':main'
