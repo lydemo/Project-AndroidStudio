@@ -218,9 +218,9 @@ public class MatisseActivity extends AppCompatActivity implements
             result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
             setResult(RESULT_OK, result);
             finish();
-            Intent photo1 = new Intent(this, ProcessActivity.class);
-            photo1.putParcelableArrayListExtra("path", selectedUris);
-            startActivityForResult(photo1, GET_DATA1);
+//            Intent photo1 = new Intent(this, ProcessActivity.class);
+//            photo1.putParcelableArrayListExtra("path", selectedUris);
+//            startActivityForResult(photo1, GET_DATA1);
         }
     }
 

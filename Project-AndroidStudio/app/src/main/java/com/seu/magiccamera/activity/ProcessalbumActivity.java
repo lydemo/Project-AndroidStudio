@@ -1,64 +1,31 @@
 package com.seu.magiccamera.activity;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.seu.magiccamera.activity.CameraActivity;
 import com.seu.magiccamera.R;
 import com.seu.magiccamera.adapter.FilterAdapter;
 import com.seu.magicfilter.MagicEngine;
-import com.seu.magicfilter.filter.advanced.MagicImageAdjustFilter;
 import com.seu.magicfilter.filter.helper.MagicFilterType;
-import com.seu.magicfilter.widget.MagicCameraView;
 import com.seu.magicfilter.widget.MagicImageView;
-import com.squareup.picasso.Picasso;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
-import clarifai2.api.ClarifaiBuilder;
-import clarifai2.api.ClarifaiClient;
-import clarifai2.dto.input.ClarifaiInput;
-import clarifai2.dto.input.image.ClarifaiImage;
-import clarifai2.dto.model.output.ClarifaiOutput;
-import clarifai2.dto.prediction.Concept;
-
-import static android.R.attr.mode;
-import static android.R.attr.path;
-import static android.R.attr.width;
 
 
 /**
@@ -67,7 +34,7 @@ import static android.R.attr.width;
 
 
 
-public class ProcessActivity extends Activity {
+public class ProcessalbumActivity extends Activity {
     //    private ImageView imageView;
     private Bitmap bmp;                          //载入图片
     private Bitmap mbmp;                       //复制模版
@@ -131,21 +98,19 @@ public class ProcessActivity extends Activity {
         StrictMode.ThreadPolicy policy=new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Intent intent = getIntent();
-        String path = intent.getStringExtra("path");
+//        String path = intent.getStringExtra("path");
         ArrayList<Uri> path_album= intent.getParcelableArrayListExtra("path_album");
-        File img= new File(path);
-        System.out.println(img.length());
+//        File img= new File(path_album);
+//        System.out.println(img.length());
 
-        BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
-        bmpFactoryOptions.inJustDecodeBounds = true;
-        bmp = BitmapFactory.decodeFile(path,bmpFactoryOptions);
-
-                for(int i=0; i<path_album.size(); i++){
-            System.out.println(path_album.get(i));
-        }
+//        BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
+//        bmpFactoryOptions.inJustDecodeBounds = true;
+//        bmp = BitmapFactory.decodeFile(path,bmpFactoryOptions);
+            System.out.println(path_album);
 
 
-        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
 //
 //        final ClarifaiClient client = new ClarifaiBuilder("-kPm0OiE1VRMGcYo6wPIjonTzkQqlS2Dq4fYmoKw", "fRLDegHHQBDRbJqzbbsaWyUwjr5BseJme3zXQjbC").buildSync();
 //
@@ -202,10 +167,10 @@ public class ProcessActivity extends Activity {
         pp.height=screenSize.x * 5 / 4;
         Imagelayout.setLayoutParams(pp);
 
-        bmpFactoryOptions.inJustDecodeBounds = false;
-        bmp = BitmapFactory.decodeFile(path,bmpFactoryOptions);
-        mbmp = bmp.copy(Bitmap.Config.ARGB_8888, true);
-        imageView.setImageBitmap(bmp); //显示照片
+//        bmpFactoryOptions.inJustDecodeBounds = false;
+//        bmp = BitmapFactory.decodeFile(path,bmpFactoryOptions);
+//        mbmp = bmp.copy(Bitmap.Config.ARGB_8888, true);
+//        imageView.setImageBitmap(bmp); //显示照片
 
 //        Glide.with(this).load(path).into(imageView);
 //        Picasso.with(this)
@@ -213,7 +178,7 @@ public class ProcessActivity extends Activity {
 //                .into(imageView);
 
 
-        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
 
 
     }

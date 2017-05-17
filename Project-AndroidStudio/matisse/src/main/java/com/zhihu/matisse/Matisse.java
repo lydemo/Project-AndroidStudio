@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -77,7 +78,7 @@ public final class Matisse {
      *             {@link Fragment#onActivityResult(int, int, Intent)}.
      * @return User selected media' {@link Uri} list.
      */
-    public static List<Uri> obtainResult(Intent data) {
+    public static ArrayList<Uri> obtainResult(Intent data) {
         return data.getParcelableArrayListExtra(MatisseActivity.EXTRA_RESULT_SELECTION);
     }
 

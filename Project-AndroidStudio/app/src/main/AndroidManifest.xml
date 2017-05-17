@@ -24,6 +24,9 @@
         <activity android:name="com.seu.magiccamera.activity.ProcessActivity"
                   android:theme="@style/AppTheme">
         </activity>
+        <activity android:name="com.seu.magiccamera.activity.ProcessalbumActivity"
+            android:theme="@style/AppTheme">
+        </activity>
         <!--<activity android:name=".activity.CameraActivity"-->
             <!--android:screenOrientation="portrait"-->
             <!--android:configChanges="keyboardHidden|orientation"-->

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -31,10 +32,13 @@ import com.seu.magicfilter.widget.MagicCameraView;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.ui.MatisseActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static android.R.attr.path;
@@ -54,7 +58,7 @@ public class CameraActivity extends Activity{
     private int mode = MODE_PIC;
     private final int GET_DATA = 2;
     private String path;
-
+    ArrayList<Uri> path_album;
     private static final int REQUEST_CODE_CHOOSE = 23;
 
 
@@ -173,6 +177,18 @@ public class CameraActivity extends Activity{
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+            path_album=Matisse.obtainResult(data);
+            System.out.println(path_album);
+            Intent photo1 = new Intent(this, ProcessalbumActivity.class);
+            photo1.putParcelableArrayListExtra("path_album", path_album);
+            startActivityForResult(photo1, GET_DATA);
+        }
+    }
+
     private View.OnClickListener btn_listener = new View.OnClickListener() {
 
         @Override
@@ -210,7 +226,6 @@ public class CameraActivity extends Activity{
 //                                })
 //                            .setNegativeButton("取消", null)
 //                            .show();
-
                     Matisse.from(CameraActivity.this)
                             .choose(MimeType.ofAll())
                             .countable(true)
@@ -222,6 +237,11 @@ public class CameraActivity extends Activity{
                             .thumbnailScale(0.85f)
                             .imageEngine(new GlideEngine())
                             .forResult(REQUEST_CODE_CHOOSE);
+
+
+//                    fromAlbum();
+
+
                     break;
 //                case R.id.btn_camera_closefilter:
 //                    hideFilters();
@@ -245,6 +265,12 @@ public class CameraActivity extends Activity{
         Intent photo = new Intent(this, ProcessActivity.class);
         photo.putExtra("path", path);
         startActivityForResult(photo, GET_DATA);
+    }
+    private void fromAlbum(){
+
+        Intent photo1 = new Intent(this, ProcessActivity.class);
+        photo1.putParcelableArrayListExtra("path_album", path_album);
+        startActivityForResult(photo1, GET_DATA);
 
     }
 
@@ -263,6 +289,13 @@ public class CameraActivity extends Activity{
         MagicParams.magicBaseView.savePicture(savePictureTask);
         path=file.getPath();
     }
+//    public void passpath(){
+//        Intent photo1 = new Intent(this, ProcessActivity.class);
+//        ArrayList<Uri> path_album=Matisse.obtainResult(photo1);
+//        photo1.putParcelableArrayListExtra("path_album", path_album);
+//        startActivityForResult(photo1, GET_DATA);
+//    }
+
 
 //    private void showFilters(){
 //        ObjectAnimator animator = ObjectAnimator.ofFloat(mFilterLayout, "translationY", mFilterLayout.getHeight(), 0);
