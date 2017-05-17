@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.provider.MediaStore;
 
 import com.seu.magiccamera.R;
 import com.seu.magiccamera.adapter.FilterAdapter;
@@ -100,6 +101,7 @@ public class ProcessalbumActivity extends Activity {
         Intent intent = getIntent();
 //        String path = intent.getStringExtra("path");
         ArrayList<Uri> path_album= intent.getParcelableArrayListExtra("path_album");
+        Uri pathalbum=path_album.get(0);
 
 //        File img= new File(path_album);
 //        System.out.println(img.length());
@@ -169,9 +171,9 @@ public class ProcessalbumActivity extends Activity {
         Imagelayout.setLayoutParams(pp);
 
 //        bmpFactoryOptions.inJustDecodeBounds = false;
-//        bmp = BitmapFactory.decodeFile(path,bmpFactoryOptions);
-//        mbmp = bmp.copy(Bitmap.Config.ARGB_8888, true);
-//        imageView.setImageBitmap(bmp); //显示照片
+        bmp = getBitmapFromUri(pathalbum);
+        mbmp = bmp.copy(Bitmap.Config.ARGB_8888, true);
+        imageView.setImageBitmap(bmp); //显示照片
 
 //        Glide.with(this).load(path).into(imageView);
 //        Picasso.with(this)
@@ -183,6 +185,21 @@ public class ProcessalbumActivity extends Activity {
 
 
     }
+    /* uri转化为bitmap */
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+// 读取uri所在的图片
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                    this.getContentResolver(), uri);
+            return bitmap;
+        } catch (Exception e) {
+//            Log.e("[Android]", e.getMessage());
+//            Log.e("[Android]", "目录为：" + uri);
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private View.OnClickListener btn_listener = new View.OnClickListener() {
 
         @Override

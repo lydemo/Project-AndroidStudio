@@ -140,10 +140,6 @@ public class ProcessActivity extends Activity {
         bmpFactoryOptions.inJustDecodeBounds = true;
         bmp = BitmapFactory.decodeFile(path,bmpFactoryOptions);
 
-                for(int i=0; i<path_album.size(); i++){
-            System.out.println(path_album.get(i));
-        }
-
 
         Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
 //
