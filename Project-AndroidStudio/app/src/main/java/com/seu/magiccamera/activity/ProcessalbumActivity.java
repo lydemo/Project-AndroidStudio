@@ -100,7 +100,7 @@ public class ProcessalbumActivity extends Activity {
         Intent intent = getIntent();
 //        String path = intent.getStringExtra("path");
         ArrayList<Uri> path_album= intent.getParcelableArrayListExtra("path_album");
-        String path=getPath()
+
 //        File img= new File(path_album);
 //        System.out.println(img.length());
 
