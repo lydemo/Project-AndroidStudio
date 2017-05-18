@@ -182,7 +182,6 @@ public class CameraActivity extends Activity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             path_album=Matisse.obtainResult(data);
-            System.out.println(path_album);
             Intent photo1 = new Intent(this, ProcessalbumActivity.class);
             photo1.putParcelableArrayListExtra("path_album", path_album);
             startActivityForResult(photo1, GET_DATA);

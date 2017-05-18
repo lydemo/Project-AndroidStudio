@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,8 +28,24 @@ import com.seu.magicfilter.MagicEngine;
 import com.seu.magicfilter.filter.helper.MagicFilterType;
 import com.seu.magicfilter.widget.MagicImageView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import clarifai2.api.ClarifaiBuilder;
+import clarifai2.api.ClarifaiClient;
+import clarifai2.dto.input.ClarifaiInput;
+import clarifai2.dto.input.image.ClarifaiImage;
+import clarifai2.dto.model.output.ClarifaiOutput;
+import clarifai2.dto.prediction.Concept;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -46,6 +65,9 @@ public class ProcessalbumActivity extends Activity {
     private RecyclerView mPoemListView;
     private FilterAdapter mAdapter;
     private MagicEngine magicEngine;
+    private JSONObject testJson;
+    private ArrayList<String> poem_list = new ArrayList<>();
+    private JSONArray array = new JSONArray();
     private final MagicFilterType[] types = new MagicFilterType[]{
             MagicFilterType.NONE,
             MagicFilterType.FAIRYTALE,
@@ -102,37 +124,26 @@ public class ProcessalbumActivity extends Activity {
 //        String path = intent.getStringExtra("path");
         ArrayList<Uri> path_album= intent.getParcelableArrayListExtra("path_album");
         Uri pathalbum=path_album.get(0);
+//        String path=pathalbum.getPath();
+        File img=uri2File(pathalbum);
+        System.out.println(img.length());
 
-//        File img= new File(path_album);
-//        System.out.println(img.length());
-
-//        BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
-//        bmpFactoryOptions.inJustDecodeBounds = true;
-//        bmp = BitmapFactory.decodeFile(path,bmpFactoryOptions);
-            System.out.println(path_album);
-
-
-
-//        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
-//
-//        final ClarifaiClient client = new ClarifaiBuilder("-kPm0OiE1VRMGcYo6wPIjonTzkQqlS2Dq4fYmoKw", "fRLDegHHQBDRbJqzbbsaWyUwjr5BseJme3zXQjbC").buildSync();
-//
-//        final List<ClarifaiOutput<Concept>> predictionResults =
-//                client.getDefaultModels().generalModel() // You can also do Clarifai.getModelByID("id") to get custom models
-//                        .predict()
-//                        .withInputs(
-//                                ClarifaiInput.forImage(ClarifaiImage.of(img))
-//                        )
-//                        .executeSync() // optionally, pass a ClarifaiClient parameter to override the default client instance with another one
-//                        .get();
-//
+        load_json();
+        final ClarifaiClient client = new ClarifaiBuilder("-kPm0OiE1VRMGcYo6wPIjonTzkQqlS2Dq4fYmoKw", "fRLDegHHQBDRbJqzbbsaWyUwjr5BseJme3zXQjbC").buildSync();
+        final List<ClarifaiOutput<Concept>> predictionResults =
+                client.getDefaultModels().generalModel() // You can also do Clarifai.getModelByID("id") to get custom models
+                        .predict()
+                        .withInputs(
+                                ClarifaiInput.forImage(ClarifaiImage.of(img))
+                        )
+                        .executeSync() // optionally, pass a ClarifaiClient parameter to override the default client instance with another one
+                        .get();
+        //检验clarifai是否工作
 //        for(int i=0; i<predictionResults.size(); i++){
 //            System.out.println(predictionResults.get(i));
 //        }
-
-
-
-//        imageShow = (ImageView) findViewById(R.id.imageView1);
+        match_poem(predictionResults);
+        //        imageShow = (ImageView) findViewById(R.id.imageView1);
         Imagelayout = (RelativeLayout) findViewById(R.id.Content_Layout);
 //        imageView = (ImageView) findViewById(R.id.imageView1);
         findViewById(R.id.btn_camera_filter).setOnClickListener(btn_listener);
@@ -161,8 +172,6 @@ public class ProcessalbumActivity extends Activity {
         magicEngine = builder
                 .build((MagicImageView)findViewById(R.id.imageView1));
 
-
-
         Point screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
         android.view.ViewGroup.LayoutParams pp = Imagelayout.getLayoutParams();
@@ -175,13 +184,17 @@ public class ProcessalbumActivity extends Activity {
         mbmp = bmp.copy(Bitmap.Config.ARGB_8888, true);
         imageView.setImageBitmap(bmp); //显示照片
 
+
+
+
+
+
+
 //        Glide.with(this).load(path).into(imageView);
 //        Picasso.with(this)
 //                .load(path)
 //                .into(imageView);
 
-
-//        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
 
 
     }
@@ -198,6 +211,78 @@ public class ProcessalbumActivity extends Activity {
             e.printStackTrace();
             return null;
         }
+    }
+    private File uri2File(Uri uri) {
+        File file = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor actualimagecursor = managedQuery(uri, proj, null,
+                null, null);
+        int actual_image_column_index = actualimagecursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        actualimagecursor.moveToFirst();
+        String img_path = actualimagecursor
+                .getString(actual_image_column_index);
+        file = new File(img_path);
+        return file;
+    }
+    //load json
+    private void load_json() {
+        try {
+            InputStreamReader isr = new InputStreamReader(getAssets().open("data.json"), "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+            StringBuilder builder = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                builder.append(line);
+            }
+            br.close();
+            isr.close();
+            testJson = new JSONObject(builder.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //match_poem
+    private void match_poem(List<ClarifaiOutput<Concept>> predictions) {
+        poem_list = new ArrayList<>();
+        try {
+            List<Concept> results = predictions.get(0).data();
+
+            //the list of the title of poems
+            List title_list = new ArrayList();
+            for (Iterator<String> iterator = testJson.keys(); iterator.hasNext(); ) {
+                String key = iterator.next();
+                title_list.add(key);
+            }
+
+            boolean found = false;
+            for (int i = 0; i < results.size() && !found; i++) {
+                for (int j = 0; j < title_list.size(); j++) {
+                    String str = title_list.get(j).toString();
+                    String check = results.get(0).name();
+                    if (str.indexOf(check) != -1) {
+
+                        array = testJson.getJSONArray(title_list.get(j).toString());
+                        found = true;
+                        break;
+
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < array.length(); i++) {
+                poem_list.add(array.getString(i));
+            }
+
+            for(int i=0; i<poem_list.size(); i++){
+            System.out.println(poem_list.get(i));
+        }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private View.OnClickListener btn_listener = new View.OnClickListener() {

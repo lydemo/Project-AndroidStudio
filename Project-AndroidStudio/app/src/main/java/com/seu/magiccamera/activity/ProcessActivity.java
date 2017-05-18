@@ -209,9 +209,6 @@ public class ProcessActivity extends Activity {
 //                .into(imageView);
 
 
-        Toast.makeText(this, path, Toast.LENGTH_SHORT).show();
-
-
     }
     private View.OnClickListener btn_listener = new View.OnClickListener() {
 
