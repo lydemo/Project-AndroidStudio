@@ -13,17 +13,20 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.provider.MediaStore;
 
 import com.seu.magiccamera.R;
 import com.seu.magiccamera.adapter.FilterAdapter;
+import com.seu.magiccamera.adapter.PoemAdapter;
 import com.seu.magicfilter.MagicEngine;
 import com.seu.magicfilter.filter.helper.MagicFilterType;
 import com.seu.magicfilter.widget.MagicImageView;
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import butterknife.BindView;
 import clarifai2.api.ClarifaiBuilder;
 import clarifai2.api.ClarifaiClient;
 import clarifai2.dto.input.ClarifaiInput;
@@ -68,6 +72,7 @@ public class ProcessalbumActivity extends Activity {
     private JSONObject testJson;
     private ArrayList<String> poem_list = new ArrayList<>();
     private JSONArray array = new JSONArray();
+    private ListView poemlist;
     private final MagicFilterType[] types = new MagicFilterType[]{
             MagicFilterType.NONE,
             MagicFilterType.FAIRYTALE,
@@ -113,6 +118,10 @@ public class ProcessalbumActivity extends Activity {
             MagicFilterType.XPROII
     };
 
+    @BindView(R.id.poem_listView) RecyclerView poem_listView;
+    @NonNull
+    private final PoemAdapter adapter = new PoemAdapter();
+
     @Override
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState){
@@ -127,6 +136,10 @@ public class ProcessalbumActivity extends Activity {
 //        String path=pathalbum.getPath();
         File img=uri2File(pathalbum);
         System.out.println(img.length());
+        mPoemLayout=(LinearLayout) findViewById(R.id.resultsList);
+        mPoemListView = (RecyclerView) findViewById(R.id.poem_listView);//古诗菜单
+        mPoemListView.setLayoutManager(new LinearLayoutManager(this));
+        mPoemListView.setAdapter(adapter);
 
         load_json();
         final ClarifaiClient client = new ClarifaiBuilder("-kPm0OiE1VRMGcYo6wPIjonTzkQqlS2Dq4fYmoKw", "fRLDegHHQBDRbJqzbbsaWyUwjr5BseJme3zXQjbC").buildSync();
@@ -143,15 +156,15 @@ public class ProcessalbumActivity extends Activity {
 //            System.out.println(predictionResults.get(i));
 //        }
         match_poem(predictionResults);
-        //        imageShow = (ImageView) findViewById(R.id.imageView1);
+        adapter.setData(poem_list);
+        //imageShow = (ImageView) findViewById(R.id.imageView1);
         Imagelayout = (RelativeLayout) findViewById(R.id.Content_Layout);
 //        imageView = (ImageView) findViewById(R.id.imageView1);
         findViewById(R.id.btn_camera_filter).setOnClickListener(btn_listener);
 
         mFilterLayout = (LinearLayout)findViewById(R.id.layout_filter);
         mFilterListView = (RecyclerView) findViewById(R.id.filter_listView);//滤镜菜单
-        mPoemLayout=(LinearLayout) findViewById(R.id.resultsList);
-        mPoemListView = (RecyclerView) findViewById(R.id.poem_listView);//古诗菜单
+
 
         findViewById(R.id.btn_camera_filter).setOnClickListener(btn_listener);
         findViewById(R.id.btn_camera_closefilter).setOnClickListener(btn_listener);
