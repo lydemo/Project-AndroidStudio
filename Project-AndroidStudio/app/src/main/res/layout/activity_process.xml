@@ -17,35 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal" />
+        <com.seu.magiccamera.view.edit.Poemtextview
+            android:id="@+id/poemtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal" />
+
     </RelativeLayout>
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--<com.seu.magicfilter.widget.MagicCameraView-->
-    <!--android:id="@+id/glsurfaceview_camera"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content" />-->
-    <!--<LinearLayout-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="center_horizontal"-->
-    <!--android:padding="5dp"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:background="@android:color/transparent">-->
-    <!--<ImageView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/btn_camera_mode"-->
-    <!--android:src="@drawable/icon_video"/>-->
-    <!--<ImageView-->
-    <!--android:layout_marginLeft="10dp"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:id="@+id/btn_camera_switch"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:src="@drawable/selector_rewardcamera"/>-->
-    <!--</LinearLayout>-->
-    <!--</RelativeLayout>-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
