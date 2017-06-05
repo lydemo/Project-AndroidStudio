@@ -4,12 +4,12 @@
         "source": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\src\\main\\res\\color\\dracula_bottom_toolbar_apply.xml"
     },
     {
-        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\release\\color\\dracula_bottom_toolbar_preview.xml",
-        "source": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\src\\main\\res\\color\\dracula_bottom_toolbar_preview.xml"
-    },
-    {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\release\\color\\abc_btn_colored_text_material.xml",
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\color\\abc_btn_colored_text_material.xml"
+    },
+    {
+        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\release\\color\\dracula_bottom_toolbar_preview.xml",
+        "source": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\src\\main\\res\\color\\dracula_bottom_toolbar_preview.xml"
     },
     {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\release\\color\\abc_btn_colored_borderless_text_material.xml",

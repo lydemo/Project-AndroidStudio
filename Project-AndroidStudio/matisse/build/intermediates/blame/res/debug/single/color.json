@@ -44,12 +44,12 @@
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\color\\abc_tint_edittext.xml"
     },
     {
-        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\color\\abc_hint_foreground_material_light.xml",
-        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\color\\abc_hint_foreground_material_light.xml"
-    },
-    {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\color\\abc_tint_switch_thumb.xml",
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\color\\abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\color\\abc_hint_foreground_material_light.xml",
+        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\color\\abc_hint_foreground_material_light.xml"
     },
     {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_material_dark.xml",

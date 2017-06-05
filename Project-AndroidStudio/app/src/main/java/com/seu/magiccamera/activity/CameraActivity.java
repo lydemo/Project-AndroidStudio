@@ -8,10 +8,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.seu.magiccamera.R;
 import com.seu.magiccamera.activity.ProcessActivity;
@@ -29,6 +32,9 @@ import com.seu.magicfilter.filter.helper.MagicFilterType;
 import com.seu.magicfilter.helper.SavePictureTask;
 import com.seu.magicfilter.utils.MagicParams;
 import com.seu.magicfilter.widget.MagicCameraView;
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.model.AspectRatio;
+import com.yalantis.ucrop.view.CropImageView;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -57,11 +63,12 @@ public class CameraActivity extends Activity{
     private final int MODE_VIDEO = 2;
     private int mode = MODE_PIC;
     private final int GET_DATA = 2;
+    private final int TAKE_PHOTO = 3;
     private String path;
     ArrayList<Uri> path_album;
     private static final int REQUEST_CODE_CHOOSE = 23;
-
-
+    private static final int REQUEST_SELECT_PICTURE = 0x01;
+    private static final String SAMPLE_CROPPED_IMAGE_NAME = "CropImage";
     private ImageView btn_shutter;
     private ImageView btn_mode;
 
@@ -127,13 +134,13 @@ public class CameraActivity extends Activity{
 //        mFilterListView = (RecyclerView) findViewById(R.id.filter_listView);
 
         btn_shutter = (ImageView)findViewById(R.id.btn_camera_shutter);
-        btn_mode = (ImageView)findViewById(R.id.btn_camera_mode);
+//        btn_mode = (ImageView)findViewById(R.id.btn_camera_mode);
 
 //        findViewById(R.id.btn_camera_filter).setOnClickListener(btn_listener);
         findViewById(R.id.btn_camera_closefilter).setOnClickListener(btn_listener);
         findViewById(R.id.btn_camera_shutter).setOnClickListener(btn_listener);
-        findViewById(R.id.btn_camera_switch).setOnClickListener(btn_listener);
-        findViewById(R.id.btn_camera_mode).setOnClickListener(btn_listener);
+//        findViewById(R.id.btn_camera_switch).setOnClickListener(btn_listener);
+//        findViewById(R.id.btn_camera_mode).setOnClickListener(btn_listener);
         findViewById(R.id.btn_camera_beauty).setOnClickListener(btn_listener);
 
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -170,8 +177,6 @@ public class CameraActivity extends Activity{
         if (grantResults.length != 1 || grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if(mode == MODE_PIC)
                 takePhoto();
-            else
-                takeVideo();
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -180,12 +185,96 @@ public class CameraActivity extends Activity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            path_album=Matisse.obtainResult(data);
-            Intent photo1 = new Intent(this, ProcessalbumActivity.class);
-            photo1.putParcelableArrayListExtra("path_album", path_album);
-            startActivityForResult(photo1, GET_DATA);
+        if (requestCode == REQUEST_SELECT_PICTURE  && resultCode == RESULT_OK) {
+//            path_album=Matisse.obtainResult(data);
+//            Intent photo1 = new Intent(this, ProcessalbumActivity.class);
+//            photo1.putParcelableArrayListExtra("path_album", path_album);
+//            startActivityForResult(photo1, GET_DATA);
+
+            final Uri selectedUri = data.getData();
+            System.out.println(selectedUri);
+            if (selectedUri != null) {
+                startCropActivity(data.getData());
+            } else {
+                Toast.makeText(CameraActivity.this, R.string.toast_cannot_retrieve_selected_image, Toast.LENGTH_SHORT).show();
+            }
+
         }
+        else if(requestCode == UCrop.REQUEST_CROP){
+            handleCropResult(data);
+
+        }
+    }
+
+    private void handleCropResult(@NonNull Intent result) {
+        final Uri resultUri = UCrop.getOutput(result);
+        if (resultUri != null) {
+            Intent photo1 = new Intent(this, ProcessalbumActivity.class);
+            photo1.putExtra("path_album", resultUri.toString());
+            startActivityForResult(photo1, GET_DATA);
+        } else {
+            Toast.makeText(CameraActivity.this, R.string.toast_cannot_retrieve_cropped_image, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Sometimes you want to adjust more options, it's done via {@link com.yalantis.ucrop.UCrop.Options} class.
+     *
+     * @param uCrop - ucrop builder instance
+     * @return - ucrop builder instance
+     */
+    private UCrop advancedConfig(@NonNull UCrop uCrop) {
+        UCrop.Options options = new UCrop.Options();
+//        options.setCompressionQuality(mSeekBarQuality.getProgress());
+//
+//        options.setHideBottomControls(mCheckBoxHideBottomControls.isChecked());
+//        options.setFreeStyleCropEnabled(mCheckBoxFreeStyleCrop.isChecked());
+
+        /*
+        If you want to configure how gestures work for all UCropActivity tabs
+
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.ALL);
+        * */
+
+        /*
+        This sets max size for bitmap that will be decoded from source Uri.
+        More size - more memory allocation, default implementation uses screen diagonal.
+
+        options.setMaxBitmapSize(640);
+        * */
+
+//        Tune everything (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
+
+//        options.setMaxScaleMultiplier(5);
+//        options.setImageToCropBoundsAnimDuration(666);
+//        options.setDimmedLayerColor(Color.CYAN);
+//        options.setCircleDimmedLayer(true);
+//        options.setShowCropFrame(false);
+//        options.setCropGridStrokeWidth(20);
+//        options.setCropGridColor(Color.GREEN);
+//        options.setCropGridColumnCount(2);
+//        options.setCropGridRowCount(1);
+//        options.setToolbarCropDrawable(R.drawable.your_crop_icon);
+//        options.setToolbarCancelDrawable(R.drawable.your_cancel_icon);
+
+        // Color palette
+//        options.setToolbarColor(ContextCompat.getColor(this, R.color.your_color_res));
+//        options.setStatusBarColor(ContextCompat.getColor(this, R.color.your_color_res));
+//        options.setActiveWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
+//        options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
+//        options.setRootViewBackgroundColor(ContextCompat.getColor(this, R.color.your_color_res));
+
+        // Aspect ratio options
+        options.setAspectRatioOptions(1,
+                new AspectRatio("4:3", 4, 3),
+//            new AspectRatio("MUCH", 3, 4),
+//                new AspectRatio("RATIO", CropImageView.DEFAULT_ASPECT_RATIO, CropImageView.DEFAULT_ASPECT_RATIO),
+                new AspectRatio("16:9", 16, 9),
+                new AspectRatio("1:1", 1, 1));
+
+
+
+        return uCrop.withOptions(options);
     }
 
     private View.OnClickListener btn_listener = new View.OnClickListener() {
@@ -193,9 +282,6 @@ public class CameraActivity extends Activity{
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.btn_camera_mode:
-                    switchMode();
-                    break;
                 case R.id.btn_camera_shutter:
                     if (PermissionChecker.checkSelfPermission(CameraActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_DENIED) {
@@ -204,8 +290,6 @@ public class CameraActivity extends Activity{
                     } else {
                         if(mode == MODE_PIC)
                             takePhoto();
-                        else
-                            takeVideo();
                     }
                     break;
 //                case R.id.btn_camera_filter:
@@ -215,86 +299,48 @@ public class CameraActivity extends Activity{
 //                    magicEngine.switchCamera();
 //                    break;
                 case R.id.btn_camera_beauty:
-//                    new AlertDialog.Builder(CameraActivity.this)
-//                            .setSingleChoiceItems(new String[] { "关闭", "1", "2", "3", "4", "5"}, MagicParams.beautyLevel,
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        magicEngine.setBeautyLevel(which);
-//                                        dialog.dismiss();
-//                                    }
-//                                })
-//                            .setNegativeButton("取消", null)
-//                            .show();
-                    Matisse.from(CameraActivity.this)
-                            .choose(MimeType.ofAll())
-                            .countable(true)
-                            .maxSelectable(1)
-//                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-//                            .gridExpectedSize(
-//                                    getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                            .thumbnailScale(0.85f)
-                            .imageEngine(new GlideEngine())
-                            .forResult(REQUEST_CODE_CHOOSE);
+//                    Matisse.from(CameraActivity.this)
+//                            .choose(MimeType.ofAll())
+//                            .countable(true)
+//                            .maxSelectable(1)
+////                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+////                            .gridExpectedSize(
+////                                    getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+//                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+//                            .thumbnailScale(0.85f)
+//                            .imageEngine(new GlideEngine())
+//                            .forResult(REQUEST_CODE_CHOOSE);
 
-
-//                    fromAlbum();
-
-
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    startActivityForResult(Intent.createChooser(intent, getString(R.string.label_select_picture)), REQUEST_SELECT_PICTURE);
                     break;
-//                case R.id.btn_camera_closefilter:
-//                    hideFilters();
-//                    break;
             }
         }
     };
+    private void startCropActivity(@NonNull Uri uri) {
+        String destinationFileName = SAMPLE_CROPPED_IMAGE_NAME;
+        destinationFileName += ".jpg";
+        UCrop uCrop = UCrop.of(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
+//        uCrop = basisConfig(uCrop);
+        uCrop = advancedConfig(uCrop);
 
-    private void switchMode(){
-        if(mode == MODE_PIC){
-            mode = MODE_VIDEO;
-            btn_mode.setImageResource(R.drawable.icon_camera);
-        }else{
-            mode = MODE_PIC;
-            btn_mode.setImageResource(R.drawable.icon_video);
-        }
+        uCrop.start(CameraActivity.this);
     }
 
     private void takePhoto(){
         savePicture(getOutputMediaFile(),null);
-        Intent photo = new Intent(this, ProcessActivity.class);
+        Intent photo = new Intent(this, CropActivity.class);
         photo.putExtra("path", path);
-        startActivityForResult(photo, GET_DATA);
-    }
-    private void fromAlbum(){
-
-        Intent photo1 = new Intent(this, ProcessActivity.class);
-        photo1.putParcelableArrayListExtra("path_album", path_album);
-        startActivityForResult(photo1, GET_DATA);
-
-    }
-
-    private void takeVideo(){
-        if(isRecording) {
-            animator.end();
-            magicEngine.stopRecord();
-        }else {
-            animator.start();
-            magicEngine.startRecord();
-        }
-        isRecording = !isRecording;
+        startActivityForResult(photo, TAKE_PHOTO);
     }
     public void savePicture(File file, SavePictureTask.OnPictureSaveListener listener){
         SavePictureTask savePictureTask = new SavePictureTask(file, listener);
         MagicParams.magicBaseView.savePicture(savePictureTask);
         path=file.getPath();
     }
-//    public void passpath(){
-//        Intent photo1 = new Intent(this, ProcessActivity.class);
-//        ArrayList<Uri> path_album=Matisse.obtainResult(photo1);
-//        photo1.putParcelableArrayListExtra("path_album", path_album);
-//        startActivityForResult(photo1, GET_DATA);
-//    }
-
 
 //    private void showFilters(){
 //        ObjectAnimator animator = ObjectAnimator.ofFloat(mFilterLayout, "translationY", mFilterLayout.getHeight(), 0);

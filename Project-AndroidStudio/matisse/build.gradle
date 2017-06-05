@@ -22,7 +22,7 @@ model{
         buildToolsVersion "25.0.2"
 
         defaultConfig {
-            minSdkVersion.apiLevel 13
+            minSdkVersion.apiLevel 14
             targetSdkVersion.apiLevel 25
         }
 //        compileOptions {

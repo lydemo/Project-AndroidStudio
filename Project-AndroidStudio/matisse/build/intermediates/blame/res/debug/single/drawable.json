@@ -1,23 +1,23 @@
 [
     {
-        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_colored_material.xml",
-        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\drawable\\abc_btn_colored_material.xml"
-    },
-    {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ic_ab_back_material.xml",
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\drawable\\abc_ic_ab_back_material.xml"
+    },
+    {
+        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\drawable\\abc_btn_colored_material.xml"
     },
     {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_textfield_search_material.xml",
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\drawable\\abc_textfield_search_material.xml"
     },
     {
-        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_spinner_textfield_background_material.xml",
-        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\drawable\\abc_spinner_textfield_background_material.xml"
-    },
-    {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_item_background_holo_dark.xml",
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\drawable\\abc_item_background_holo_dark.xml"
+    },
+    {
+        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_spinner_textfield_background_material.xml",
+        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\drawable\\abc_spinner_textfield_background_material.xml"
     },
     {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_ic_go_search_api_material.xml",

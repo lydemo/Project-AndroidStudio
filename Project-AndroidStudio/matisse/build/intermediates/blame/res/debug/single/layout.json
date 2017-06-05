@@ -32,12 +32,12 @@
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\layout\\select_dialog_item_material.xml"
     },
     {
-        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_title_material.xml",
-        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\layout\\abc_alert_dialog_title_material.xml"
-    },
-    {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\layout\\support_simple_spinner_dropdown_item.xml",
         "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\layout\\support_simple_spinner_dropdown_item.xml"
+    },
+    {
+        "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_title_material.xml",
+        "source": "C:\\Users\\luoyin\\.android\\build-cache\\845f29a23c509960c8836c90008d83a0803391de\\output\\res\\layout\\abc_alert_dialog_title_material.xml"
     },
     {
         "merged": "F:\\Project-AndroidStudio\\Project-AndroidStudio\\matisse\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_simple_overlay_action_mode.xml",

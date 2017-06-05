@@ -19,17 +19,17 @@
             android:layout_alignParentRight="true"
             android:orientation="horizontal"
             android:background="@android:color/transparent">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btn_camera_mode"
-                android:src="@drawable/icon_video"/>
-            <ImageView
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:id="@+id/btn_camera_switch"
-                android:layout_height="wrap_content"
-                android:src="@drawable/selector_rewardcamera"/>
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/btn_camera_mode"-->
+                <!--android:src="@drawable/icon_video"/>-->
+            <!--<ImageView-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:id="@+id/btn_camera_switch"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/selector_rewardcamera"/>-->
         </LinearLayout>
     </RelativeLayout>
     <FrameLayout

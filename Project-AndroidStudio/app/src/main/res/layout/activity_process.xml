@@ -14,9 +14,10 @@
         android:gravity="center">
         <com.seu.magicfilter.widget.MagicImageView
             android:id="@+id/imageView1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center"
+            />
         <com.seu.magiccamera.view.edit.Poemtextview
             android:id="@+id/poemtext"
             android:layout_width="wrap_content"
