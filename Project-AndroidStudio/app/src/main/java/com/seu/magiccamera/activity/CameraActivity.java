@@ -35,10 +35,7 @@ import com.seu.magicfilter.widget.MagicCameraView;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.model.AspectRatio;
 import com.yalantis.ucrop.view.CropImageView;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.ui.MatisseActivity;
+
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -299,18 +296,6 @@ public class CameraActivity extends Activity{
 //                    magicEngine.switchCamera();
 //                    break;
                 case R.id.btn_camera_beauty:
-//                    Matisse.from(CameraActivity.this)
-//                            .choose(MimeType.ofAll())
-//                            .countable(true)
-//                            .maxSelectable(1)
-////                            .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-////                            .gridExpectedSize(
-////                                    getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-//                            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-//                            .thumbnailScale(0.85f)
-//                            .imageEngine(new GlideEngine())
-//                            .forResult(REQUEST_CODE_CHOOSE);
-
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -405,14 +390,17 @@ public class CameraActivity extends Activity{
 //    }
 
     public File getOutputMediaFile() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINESE).format(new Date());
+        String filename=timeStamp+".jpg";
+
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MagicCamera.jpg");
+                Environment.DIRECTORY_PICTURES), filename);
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINESE).format(new Date());
+
 //        File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
 //                "IMG_" + timeStamp + ".jpg");
 

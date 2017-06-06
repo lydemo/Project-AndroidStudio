@@ -5,14 +5,13 @@
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../gradle-3.3" />
+        <option name="gradleHome" value="F:/gradle-3.3" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/magicfilter" />
             <option value="$PROJECT_DIR$/main" />
-            <option value="$PROJECT_DIR$/matisse" />
             <option value="$PROJECT_DIR$/sample" />
             <option value="$PROJECT_DIR$/sample1" />
           </set>
