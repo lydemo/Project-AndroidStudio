@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,11 +20,13 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,6 +38,8 @@ import com.seu.magiccamera.adapter.App;
 import com.seu.magiccamera.adapter.FilterAdapter;
 import com.seu.magiccamera.adapter.PoemAdapter;
 import com.seu.magiccamera.view.edit.Poemtextview;
+import com.seu.magiccamera.view.edit.text.ColorTagImageView;
+import com.seu.magiccamera.view.edit.text.MyRelativeLayout;
 import com.seu.magicfilter.MagicEngine;
 import com.seu.magicfilter.filter.helper.MagicFilterType;
 import com.seu.magicfilter.widget.MagicImageView;
@@ -67,16 +73,16 @@ import static android.app.PendingIntent.getActivity;
 /**
  * Created by luoyin on 2017/5/7.
  */
-public class ProcessalbumActivity extends Activity implements PoemAdapter.ListItemClickListener{
+public class ProcessalbumActivity extends Activity implements PoemAdapter.ListItemClickListener,MyRelativeLayout.textClick{
     private Bitmap bmp;                          //载入图片
-    private RelativeLayout Imagelayout;
+    private MyRelativeLayout Imagelayout;
     private LinearLayout mFilterLayout;
     private RecyclerView mFilterListView;
     private LinearLayout mPoemLayout;
     private RecyclerView mPoemListView;
     private FilterAdapter mAdapter;
     private File img;
-    private Poemtextview poemtext;
+    private TextView poemtext;
     private MagicEngine magicEngine;
     private JSONObject testJson;
     private ArrayList<String> poem_list = new ArrayList<>();
@@ -125,6 +131,18 @@ public class ProcessalbumActivity extends Activity implements PoemAdapter.ListIt
             MagicFilterType.WALDEN,
             MagicFilterType.XPROII
     };
+
+    //文字修改
+    private LinearLayout textCustomLayout;
+    private LinearLayout mTextFontLayout;
+    private LinearLayout mTextFontMoreLayout;
+    private ImageView textFontImageView;
+    private ImageView textColorImageView;
+    private ImageView textFontMoreImageView;
+    private ImageView textDirectIV;
+    private ImageView textBorderIV;
+    private ImageView textTiltIV;
+
     @NonNull private final PoemAdapter adapter = new PoemAdapter();
     @SuppressLint("NewApi")
     @Override
@@ -141,7 +159,8 @@ public class ProcessalbumActivity extends Activity implements PoemAdapter.ListIt
         img=new File(pathalbum.getPath());
 //        System.out.println(img.length());
         //设置图片预览的区域
-        Imagelayout = (RelativeLayout) findViewById(R.id.Content_Layout);
+        Imagelayout = (MyRelativeLayout) findViewById(R.id.Content_Layout);
+        Imagelayout.setTextClick(this);
         Point screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
         android.view.ViewGroup.LayoutParams pp = Imagelayout.getLayoutParams();
@@ -182,17 +201,74 @@ public class ProcessalbumActivity extends Activity implements PoemAdapter.ListIt
         findViewById(R.id.btn_camera_closefilter).setOnClickListener(btn_listener);
         findViewById(R.id.btn_camera_beauty).setOnClickListener(btn_listener);
         findViewById(R.id.btn_closepoems).setOnClickListener(btn_listener);
+        findViewById(R.id.btn_text_color_close).setOnClickListener(btn_listener);
 
         //诗词文字
-        poemtext=(Poemtextview) findViewById(R.id.poemtext);
+        poemtext=(TextView) findViewById(R.id.poemtext);
         load_json();
+//        mPoemLayout=(LinearLayout) findViewById(R.id.resultsList);
+//        mPoemListView = (RecyclerView) findViewById(R.id.poem_listView);//古诗菜单
+//        mPoemListView.setLayoutManager(new LinearLayoutManager(this));
+//        mPoemListView.setAdapter(adapter);
+        initTextCustomUI();
+        onImagePicked(img);
+
+        //文字修改
+        textCustomLayout = (LinearLayout) findViewById(R.id.textModify);
+        final int[] colors = new int[1];
+        colors[0] = Color.BLACK;
+        ColorTagImageView colorTagImageView = (ColorTagImageView) findViewById(R.id.color_tag);
+        colorTagImageView.setListener(new ColorTagImageView.OnColorTagChanges() {
+            @Override
+            public void onColorChange(int color) {
+                poemtext.setTextColor(color);
+                colors[0] = color;
+            }
+        });
+        //文字修改的监听
+        textFontImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextFontLayout.setVisibility(View.VISIBLE);
+                mTextFontMoreLayout.setVisibility(View.INVISIBLE);
+
+            }
+        });
+        textColorImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextFontLayout.setVisibility(View.INVISIBLE);
+                mTextFontMoreLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+        textFontMoreImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextFontMoreLayout.setVisibility(View.VISIBLE);
+                mTextFontLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        textFontMore();
+
+    }
+    private void initTextCustomUI() {
+
         mPoemLayout=(LinearLayout) findViewById(R.id.resultsList);
         mPoemListView = (RecyclerView) findViewById(R.id.poem_listView);//古诗菜单
         mPoemListView.setLayoutManager(new LinearLayoutManager(this));
         mPoemListView.setAdapter(adapter);
-        onImagePicked(img);
+
+        textFontImageView = (ImageView) findViewById(R.id.text_font_btn);
+        textFontMoreImageView = (ImageView) findViewById(R.id.text_font_more_btn);
+        textColorImageView = (ImageView) findViewById(R.id.text_color_btn);
+
+        mTextFontLayout = (LinearLayout) findViewById(R.id.text_font_layout);
+        mTextFontMoreLayout = (LinearLayout) findViewById(R.id.text_font_more_layout);
 
     }
+
+
     /* uri转化为bitmap */
     private Bitmap getBitmapFromUri(Uri uri) {
         try {
@@ -292,6 +368,20 @@ public class ProcessalbumActivity extends Activity implements PoemAdapter.ListIt
 public void onListItemClick(int clickedItemIndex) {
     poemtext.setText(poem_list.get(clickedItemIndex));
 }
+@Override
+    public void onTextClick() {
+
+        textCustom();
+
+    }
+
+    private void textCustom() {
+
+        mPoemLayout.setVisibility(View.INVISIBLE);
+        textCustomLayout.setVisibility(View.VISIBLE);
+    }
+
+
 //匹配的线程
     private void onImagePicked(@NonNull final File image) {
         // Now we will upload our image to the Clarifai API
@@ -359,9 +449,59 @@ public void onListItemClick(int clickedItemIndex) {
                 case R.id.btn_closepoems:
                     hidePoems();
                     break;
+                case R.id.btn_text_color_close:
+                    hideTextColor();
+                    break;
             }
         }
     };
+    private void textFontMore(){
+        textDirectIV = (ImageView) findViewById(R.id.text_direct_image);
+        textBorderIV = (ImageView) findViewById(R.id.text_border_image);
+        textTiltIV = (ImageView) findViewById(R.id.text_tile_image);
+        poemtext.setTypeface(Typeface.DEFAULT);
+        textBorderIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                switch (poemtext.getTypeface().getStyle()) {
+                    case 0:
+                        poemtext.setTypeface(null, Typeface.BOLD);
+                        break;
+                    case 1:
+                        poemtext.setTypeface(Typeface.DEFAULT);
+                        Log.d("HHHH", "onClick: " + poemtext.getTypeface().getStyle());
+                        break;
+                    case 2:
+                        poemtext.setTypeface(null, Typeface.BOLD_ITALIC);
+                        break;
+                    case 3:
+                        poemtext.setTypeface(null, Typeface.ITALIC);
+                        break;
+                }
+
+            }
+        });
+        textTiltIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (poemtext.getTypeface().getStyle()) {
+                    case 0:
+                        poemtext.setTypeface(null, Typeface.ITALIC);
+                        break;
+                    case 1:
+                        poemtext.setTypeface(null, Typeface.BOLD_ITALIC);
+                        break;
+                    case 2:
+                        poemtext.setTypeface(Typeface.DEFAULT);
+                        break;
+                    case 3:
+                        poemtext.setTypeface(null, Typeface.BOLD);
+                        break;
+                }
+            }
+        });
+    }
     private void showFilters(){
         ObjectAnimator animator = ObjectAnimator.ofFloat(mFilterLayout, "translationY", mFilterLayout.getHeight(), 0);
         animator.setDuration(200);
@@ -479,6 +619,40 @@ public void onListItemClick(int clickedItemIndex) {
             public void onAnimationCancel(Animator animation) {
                 // TODO Auto-generated method stub
                 mPoemLayout.setVisibility(View.INVISIBLE);
+                findViewById(R.id.btn_camera_beauty).setClickable(true);
+                findViewById(R.id.btn_camera_filter).setClickable(true);
+            }
+        });
+        animator.start();
+    }
+    private void hideTextColor(){
+        ObjectAnimator animator = ObjectAnimator.ofFloat(textCustomLayout, "translationY", 0 , textCustomLayout.getHeight());
+        animator.setDuration(200);
+        animator.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // TODO Auto-generated method stub
+                textCustomLayout.setVisibility(View.INVISIBLE);
+                findViewById(R.id.btn_camera_beauty).setClickable(true);
+                findViewById(R.id.btn_camera_filter).setClickable(true);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                // TODO Auto-generated method stub
+                textCustomLayout.setVisibility(View.INVISIBLE);
                 findViewById(R.id.btn_camera_beauty).setClickable(true);
                 findViewById(R.id.btn_camera_filter).setClickable(true);
             }

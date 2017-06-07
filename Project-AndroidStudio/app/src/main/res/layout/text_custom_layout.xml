@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_custom_menu_tab"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/text_custom_menu"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40.0dip"-->
+        <!--android:padding="5.0dip"-->
+        <!--android:scrollbars="none"-->
+        <!--android:background="@android:color/white"/>-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40.0dip">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@android:color/white"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
+
+            <ImageView
+                android:id="@+id/text_color_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dip"
+                android:layout_weight="1.0"
+                android:src="@drawable/btn_text_color"
+                android:scaleType="center"/>
+
+            <ImageView
+                android:id="@+id/text_font_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:src="@drawable/btn_text_font"
+                android:scaleType="center"/>
+            <ImageView
+                android:id="@+id/text_font_more_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:src="@drawable/btn_text_font_more"
+                android:scaleType="center"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/black"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dip"
+                android:background="@android:color/white">
+
+                <com.seu.magiccamera.view.edit.text.ColorTagImageView
+                    android:id="@+id/color_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/colortag"
+                    />
+            </RelativeLayout>>
+
+        <include
+            android:id="@+id/text_font_layout"
+            layout="@layout/font_layout"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="65dip" />
+
+        <include
+            android:id="@+id/text_font_more_layout"
+            layout="@layout/font_more_layout"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="65dip" />
+
+    </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/black"/>
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/text_custom_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="71dp"-->
+        <!--android:padding="10dp"></android.support.v7.widget.RecyclerView>-->
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:background="@android:color/black"/>-->
+    <ImageView
+        android:background="@android:color/white"
+        android:id="@+id/btn_text_color_close"
+        android:layout_width="match_parent"
+        android:layout_height="15dip"
+        android:scaleType="center"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/btn_layout_filters_bar_close" />
+
+</LinearLayout>

@@ -5,27 +5,29 @@
     android:orientation="vertical"
     tools:context="com.seu.magiccamera.activity.CameraActivity" >
     <!-- 显示图片 -->
-    <RelativeLayout
+    <com.seu.magiccamera.view.edit.text.MyRelativeLayout
         android:id="@+id/Content_Layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="#EFDFDF"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_weight="0.99">
         <com.seu.magicfilter.widget.MagicImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             />
-        <com.seu.magiccamera.view.edit.Poemtextview
+        <TextView
             android:id="@+id/poemtext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:layout_gravity="center_horizontal" />
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp" />
 
-    </RelativeLayout>
+    </com.seu.magiccamera.view.edit.text.MyRelativeLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -65,6 +67,13 @@
         <include
             android:id="@+id/resultsList"
             layout="@layout/poem_layout"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/>
+        <include
+            android:id="@+id/textModify"
+            layout="@layout/text_custom_layout"
             android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
